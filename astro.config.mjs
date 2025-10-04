@@ -5,6 +5,5 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://eilwm.github.io',
-  base: '/my-portfolio',
   integrations: [mdx(), sitemap()],
 });
