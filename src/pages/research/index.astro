@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { slugOf } from "../../utils/content";
+
+const entries = (await getCollection("research")).sort(
+  (a, b) => +b.data.pubDate - +a.data.pubDate
+);
+---
+<BaseLayout title="Research — Kshitij Anand">
+  <h1>Research</h1>
+  <ul class="grid">
+    {entries.map((entry) => (
+      <li class="card">
+        <h3>{entry.data.title}</h3>
+        <p class="muted">{entry.data.pubDate.toDateString()}</p>
+        {entry.data.abstract && <p>{entry.data.abstract}</p>}
+        <a href={`/research/${slugOf(entry)}/`}>Read →</a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

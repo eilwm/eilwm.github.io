@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import items from "../../data/social.json";
+---
+<BaseLayout title="Social — Kshitij Anand">
+  <h1>Curated Social Posts</h1>
+  <ul class="grid">
+    {items.map((i) => (
+      <li class="card">
+        <strong>{i.platform}:</strong>
+        <br />
+        <a href={i.url} target="_blank" rel="noopener">{i.title}</a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

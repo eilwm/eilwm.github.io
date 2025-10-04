@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { slugOf } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((p) => ({ params: { slug: slugOf(p) } }));
+}
+
+const { slug } = Astro.params;
+
+const posts = await getCollection("blog");
+const entry = posts.find((p) => slugOf(p) === slug);
+
+if (!entry) throw new Error(`Post not found for slug "${slug}"`);
+
+// Astro v4: use render(entry) instead of entry.render()
+const { Content } = await render(entry);
+const data = entry.data;
+---
+<BaseLayout title={`${data.title} — Blog`}>
+  <article class="card">
+    <h1>{data.title}</h1>
+    <p class="muted">{data.pubDate.toDateString()}</p>
+    <Content />
+  </article>
+</BaseLayout>

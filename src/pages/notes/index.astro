@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import notes from "../../data/notes.json";
+---
+<BaseLayout title="Notes — Kshitij Anand">
+  <h1>Notes (PDF)</h1>
+  <ul class="grid">
+    {notes.map((n) => (
+      <li class="card">
+        <a href={`/notes/${n.file}`} target="_blank" rel="noopener">
+          {n.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="muted">Add PDFs to <code>public/notes/</code> and list them in <code>src/data/notes.json</code>.</p>
+</BaseLayout>

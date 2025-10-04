@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Resume — Kshitij Anand" description="Resume for Kshitij Anand.">
+  <h1>Resume</h1>
+
+  <!-- Inline PDF viewer with fallback link -->
+  <div style="border:1px solid #eee; border-radius:12px; overflow:hidden; height:80vh;">
+    <object data="/resume.pdf" type="application/pdf" width="100%" height="100%">
+      <iframe src="/resume.pdf" width="100%" height="100%"></iframe>
+    </object>
+  </div>
+
+  <p class="muted" style="margin-top:0.5rem">
+    If the PDF viewer doesn’t load, <a href="/resume.pdf" target="_blank" rel="noopener">open it in a new tab</a>.
+  </p>
+</BaseLayout>

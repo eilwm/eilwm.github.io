@@ -1,0 +1,24 @@
+---
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/resume", label: "Resume" },
+  { href: "/blog/", label: "Blog" },
+  { href: "/research/", label: "Research" },
+  { href: "/social/", label: "Social" },
+  { href: "/notes/", label: "Notes" },
+];
+const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
+---
+<nav class="site-nav">
+  {links.map(l => (
+    <a href={l.href} aria-current={here===l.href.replace(/\/+$/,"") ? "page" : undefined}>
+      {l.label}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .site-nav { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
+  .site-nav a { text-decoration:none; color: var(--link); padding: 0.25rem 0; }
+  .site-nav a[aria-current="page"] { font-weight:700; }
+</style>

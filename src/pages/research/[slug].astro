@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { slugOf } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("research");
+  return entries.map((entry) => ({ params: { slug: slugOf(entry) } }));
+}
+
+const { slug } = Astro.params;
+
+const entries = await getCollection("research");
+const entry = entries.find((item) => slugOf(item) === slug);
+
+if (!entry) throw new Error(`Research entry not found for slug "${slug}"`);
+
+const { Content } = await render(entry);
+const data = entry.data;
+const links = Array.isArray(data.links) ? data.links : [];
+const tags = Array.isArray(data.tags) ? data.tags : [];
+---
+<BaseLayout title={`${data.title} — Research`}>
+  <article class="card">
+    <h1>{data.title}</h1>
+    <p class="muted">{data.pubDate.toDateString()}</p>
+    {data.abstract && <p>{data.abstract}</p>}
+    {links.length > 0 && (
+      <ul class="muted">
+        {links.map((link) => (
+          <li>
+            <a href={link.url} target="_blank" rel="noreferrer noopener">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+    {tags.length > 0 && <p class="muted">Tags: {tags.join(", ")}</p>}
+    <Content />
+  </article>
+</BaseLayout>
