@@ -1,14 +1,49 @@
 ---
-const { title = "My Portfolio", description = "" } = Astro.props;
 import Nav from "../components/Nav.astro";
+
+const {
+  title = "Kshitij Anand — Portfolio",
+  description = "Research, blog, notes, and projects.",
+  image, // optional per-page override: absolute URL or path like "/images/preview.png"
+} = Astro.props;
+
+// Build absolute URLs for canonical and preview images
+const site = Astro.site;                  // from astro.config.mjs
+const url = new URL(Astro.url.pathname, site).href;
+const imgUrl = image
+  ? (image.startsWith("http") ? image : new URL(image, site).href)
+  : new URL("/og.png", site).href;
+
+const base = import.meta.env.BASE_URL;    // e.g. "/my-portfolio/" on GH Pages; "/" locally
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
+
+    <!-- Basic SEO -->
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
+    <link rel="canonical" href={url} />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={imgUrl} />
+    <meta property="og:site_name" content="Kshitij Anand" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imgUrl} />
+
+    <!-- Base-aware favicon (works with GitHub Pages base path) -->
+    <link rel="icon" href={`${base}favicon.svg`} />
+
     <style>
       :root { --max: 960px; --fg:#0e0e10; --muted:#666; --link:#3b82f6; }
       * { box-sizing: border-box }
@@ -21,11 +56,11 @@ import Nav from "../components/Nav.astro";
       ul { padding-left: 1rem; }
       ul.grid { list-style: none; padding-left: 0; }
     </style>
-
   </head>
+
   <body>
     <header><Nav /></header>
     <main><slot /></main>
-    <footer class="muted">© {new Date().getFullYear()} Your Name</footer>
+    <footer class="muted">© {new Date().getFullYear()} Kshitij Anand</footer>
   </body>
 </html>
